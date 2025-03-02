@@ -1,0 +1,132 @@
+{
+	"layer": "top",
+    "width": 1728,
+    "margin-top": 10,
+    "margn-bottom": 0,
+
+    //Modules layout
+
+	"modules-left": ["custom/launcher","cpu","memory","disk"],
+	"modules-center": ["hyprland/workspaces"],
+	"modules-right": ["network","pulseaudio", "battery","clock","custom/power"],
+	
+
+    // Sourced modules
+
+	"pulseaudio": {
+		"tooltip": false,
+		"scroll-step": 5,
+		"format": "{icon} {volume}%",
+		"format-muted": "{icon} {volume}%",
+		"on-click":"pactl set-sink-mute @DEFAULT_SINK@ toggle",
+		"format-icons": {
+			"default": [
+                "<span color='#ebdbb2'> </span>", 
+                "<span color='#ebdbb2'> </span>", 
+                "<span color='#ebdbb2'> </span>"
+            ]
+		}
+	},
+    "hyprland/workspaces": {
+		"disable-scroll": true,
+        "on-click": "activate",
+        "all-outputs": true,
+        "active-only": false,
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+        },
+        "format": "{icon}",
+        "format-icons": {
+            "active": "<span font='12'>󰮯</span>",
+            "empty": "<span font='8'></span>",
+            "persistent": "󰊠",
+        },
+    },
+	"network": {
+		"tooltip": false,
+		"format-wifi": "<span color='#ebdbb2'> </span> {bandwidthDownBits}",
+		"format-ethernet": "",
+        "interval": 30
+	},
+	"backlight": {
+		"tooltip": false,
+		"format": " {}%",
+		"interval":1,
+        "on-scroll-up": "light -A 5",
+		"on-scroll-down": "light -U 5"
+	},
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 10
+        },
+        "format": "{icon}  <span color='#ebdbb2'>{capacity}%</span>",
+        "format-charging": "<span color='#ebdbb2'></span> <span color='#F1F1F1'>{capacity}%</span>",
+        "format-plugged": " <span color='#ebdbb2'>{capacity}</span>%",
+        "format-alt": "<span color='#ebdbb2'>{time}</span> {icon}",
+        "format-icons": [
+            "<span color='#ebdbb2'></span>", 
+            "<span color='#ebdbb2'></span>", 
+            "<span color='#ebdbb2'></span>", 
+            "<span color='#ebdbb2'></span>", 
+            "<span color='#ebdbb2'></span>"
+        ]
+    },
+
+	"clock": {
+        "tooltip": true,
+        "interval": 60,
+        "format": "{:%I:%M %p}",
+        "tooltip-format": "{:%Y-%m-%d}",
+    },
+
+    "cpu": {
+        "interval": 15,
+        "format": "<span color='#ebdbb2'> </span> {}%",
+        "max-length": 10
+    },
+
+    "disk": {
+        "format": "<span color='#ebdbb2'> </span> {used}",
+        "interval": 1,
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": "<span color='#ebdbb2'> </span> {used}GiB",
+        "max-length": 10
+    },
+
+    "custom/media": {
+        "interval": 30,
+        "format": "{icon} {}",
+        "return-type": "json",
+        "max-length": 20,
+        "format-icons": {
+            "spotify": " ",
+            "default": " "
+        },
+        "escape": true,
+        "exec": "$HOME/.config/system_scripts/mediaplayer.py 2> /dev/null",
+        "on-click": "playerctl play-pause"
+    },
+ 
+    "custom/power":{
+        "format": "<span color='#ebdbb2'>⏻</span>",
+        "on-click": "wlogout",
+    },
+    "custom/updates":{
+        "format": "{} Update(s)",
+        "exec": "checkupdates | wc -l",
+        "exec-if": "[[ $(checkupdates | wc -l) != 0 ]]",
+        "interval": 15,
+        "on-click": "alacritty -e paru -Syu && notify-send 'The system has been updated' "
+    },
+    
+}
